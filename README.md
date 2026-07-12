@@ -448,5 +448,4 @@ MLOps Assignment
 ---
 
 # License
-
 This project was developed for academic purposes.
