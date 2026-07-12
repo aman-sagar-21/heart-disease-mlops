@@ -4,7 +4,10 @@ from app.predictor import predict_heart_disease
 
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 logger = logging.getLogger(__name__)
 
@@ -23,14 +26,25 @@ def home():
 
 @app.post("/predict")
 def predict(request: HeartDiseaseRequest):
-    logger.info(f"Prediction requested: {request.model_dump()}")
+    logger.info("Received prediction request")
+
     prediction, confidence = predict_heart_disease(
         request.model_dump()
     )
 
-    logger.info(f"Prediction={prediction}, Confidence={confidence:.4f}")
+    logger.info(
+        f"Prediction={prediction}, Confidence={confidence:.4f}"
+    )
 
     return {
         "prediction": prediction,
         "confidence": round(confidence, 4)
+    }
+
+@app.get("/health")
+def health():
+
+    return {
+        "status": "healthy",
+        "model": "loaded"
     }
